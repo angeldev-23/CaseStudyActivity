@@ -1,26 +1,36 @@
-import React, { useEffect, useState } from 'react';
-import { Table, Container, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Table, Button, Form } from 'react-bootstrap';
 
-const ViewProduct = () => {
+const ProductList = () => {
   const [products, setProducts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    // Fetch products from the backend
-    setProducts([
-      { id: 1, barcode: '0428', description: 'Rim', price: 1500, quantity: 25, category: 'Chrome Rims' },
-      { id: 2, barcode: '1421', description: 'Headlight', price: 750, quantity: 30, category: 'LED' },
-      // More products...
-    ]);
+    fetchProducts();
   }, []);
 
+  const fetchProducts = async () => {
+    const response = await axios.get('http://127.0.0.1:8000/api/products');
+    setProducts(response.data);
+  };
+
+  const deleteProduct = async (id) => {
+    await axios.delete(`http://127.0.0.1:8000/api/products/${id}`);
+    fetchProducts();
+  };
+
   return (
-    <Container>
-      <h2>Product List</h2>
+    <div>
+      <h1>Product List</h1>
+      <Form.Control
+        type="text"
+        placeholder="Search Products"
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
       <Table striped bordered hover>
         <thead>
           <tr>
-            <th>Barcode</th>
             <th>Description</th>
             <th>Price</th>
             <th>Quantity</th>
@@ -29,25 +39,26 @@ const ViewProduct = () => {
           </tr>
         </thead>
         <tbody>
-          {products.map((product) => (
-            <tr key={product.id}>
-              <td>{product.barcode}</td>
-              <td>{product.description}</td>
-              <td>{product.price}</td>
-              <td>{product.quantity}</td>
-              <td>{product.category}</td>
-              <td>
-                <Link to={`/edit-product/${product.id}`}>
-                  <Button variant="warning">Edit</Button>
-                </Link>
-                <Button variant="danger">Delete</Button>
-              </td>
-            </tr>
-          ))}
+          {products
+            .filter((product) =>
+              product.description.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+            .map((product) => (
+              <tr key={product.id}>
+                <td>{product.description}</td>
+                <td>{product.price}</td>
+                <td>{product.quantity}</td>
+                <td>{product.category}</td>
+                <td>
+                  <Button variant="warning" href={`/edit/${product.id}`}>Edit</Button>
+                  <Button variant="danger" onClick={() => deleteProduct(product.id)}>Delete</Button>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </Table>
-    </Container>
+    </div>
   );
 };
 
-export default ViewProduct;
+export default ProductList;
