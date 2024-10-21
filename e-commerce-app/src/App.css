@@ -1,38 +1,60 @@
-.App {
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Centering the login box */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f8f9fa;
+}
+
+/* Adjust the box size */
+.login-box {
+  background-color: white;
+  padding: 30px; /* Adjust padding for box */
+  border-radius: 15px; /* Rounded corners */
+  border: 1px solid #ddd;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2); /* Stronger box shadow */
+  position: relative;
+  width: 500px; /* Increased box width */
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center; /* Ensure content is centered */
 }
 
-.App-link {
-  color: #61dafb;
+/* Gear logo centered with shadow */
+.gear-logo {
+  animation: spin 4s linear infinite;
+  color: #393939; /* Gear color */
+  filter: drop-shadow(2px 2px 2px rgba(0, 106, 255, 0.5)); /* Proper shadow for SVG icon */
 }
 
-@keyframes App-logo-spin {
-  from {
+@keyframes spin {
+  0% {
     transform: rotate(0deg);
   }
-  to {
+  100% {
     transform: rotate(360deg);
   }
+}
+
+.login-box h2 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.forgot-password, .signup {
+  margin-top: 10px;
+  color: #007bff;
+  cursor: pointer;
+}
+
+.forgot-password:hover, .signup:hover {
+  text-decoration: underline;
 }

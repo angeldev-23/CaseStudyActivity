@@ -7,7 +7,7 @@ const EditProduct = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const navigate = useNavigate();
-S
+
   // Fetch the existing product details by ID
   useEffect(() => {
     const fetchProduct = async () => {
