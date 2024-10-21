@@ -28,7 +28,7 @@ const AddProduct = () => {
 
   return (
     <Container>
-      <h2>Add Product</h2>
+      <h2><strong>Add Product</strong></h2>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formBarcode">
           <Form.Label>Barcode</Form.Label>
@@ -80,6 +80,7 @@ const AddProduct = () => {
             placeholder="Enter product category" 
           />
         </Form.Group>
+        <br></br>
         <Button variant="primary" type="submit">
           Add Product
         </Button>

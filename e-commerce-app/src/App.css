@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: Arial, sans-serif;
+  font-family: Arial, sans-serif !important;
 }
 
 /* Centering the login box */
@@ -57,4 +57,40 @@ body {
 
 .forgot-password:hover, .signup:hover {
   text-decoration: underline;
+}
+
+.dashboard-container {
+  text-align: center; /* Center text and elements */
+  margin-top: 20px; /* Add some space at the top */
+}
+
+.header {
+  display: flex;
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+  margin-bottom: 30px; /* Space between header and buttons */
+}
+
+.brand-text {
+  font-size: 2em; /* Increase font size */
+  color: #393939; /* Color for the brand text */
+  margin-left: 10px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center; /* Center buttons */
+  gap: 20px; /* Space between buttons */
+}
+
+.button-link {
+  text-decoration: none; /* Remove underline */
+}
+
+.form-label {
+  margin-top: 20px;
+}
+
+.form-group {
+  margin-bottom: 10px;
 }
