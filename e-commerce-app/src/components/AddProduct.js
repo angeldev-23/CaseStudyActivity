@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios'; // Import axios
 import logo from '../assets/gearshift.png'; // Import your logo image
 
 const AddProduct = () => {
@@ -11,6 +12,8 @@ const AddProduct = () => {
     quantity: '',
     category: ''
   });
+  const [loading, setLoading] = useState(false); // Loading state
+  const [error, setError] = useState(''); // Error message state
 
   const navigate = useNavigate();
 
@@ -18,11 +21,29 @@ const AddProduct = () => {
     setProduct({ ...product, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Here you would make the API call to add the product
-    console.log('Product added:', product);
-    navigate('/products');
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent the default form submission
+
+    try {
+      setLoading(true); // Set loading to true before making the request
+
+      // Make the API call to add the product
+      const response = await axios.post('http://127.0.0.1:8000/api/products', product);
+
+      // Check the response (if the product is successfully added)
+      if (response.status === 200) {
+        // Navigate to the products page after successfully adding the product
+        navigate('/products');
+      } else {
+        // Handle any non-200 response
+        setError('Failed to add product. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setError('Something went wrong. Please try again.');
+    } finally {
+      setLoading(false); // Set loading to false after the request is finished
+    }
   };
 
   return (
@@ -99,8 +120,11 @@ const AddProduct = () => {
           />
         </Form.Group>
 
-        <Button variant="primary" type="submit" className="submit-button">
-          Add Product
+        {/* Display error message if there's any */}
+        {error && <p className="error-message" style={{ color: 'red' }}>{error}</p>}
+
+        <Button variant="primary" type="submit" className="submit-button" disabled={loading}>
+          {loading ? 'Adding Product...' : 'Add Product'}
         </Button>
       </Form>
     </Container>
