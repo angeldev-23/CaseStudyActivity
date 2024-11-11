@@ -6,6 +6,7 @@ import Dashboard from "./components/Dashboard";
 import AddProduct from "./components/AddProduct";
 import ViewProduct from "./components/ViewProduct";
 import EditProduct from "./components/Editproduct";
+
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 

@@ -15,6 +15,7 @@ const EditProduct = () => {
         const response = await axios.get(
           `http://localhost:8000/api/products/${id}`
         );
+
         console.log("Fetched product data:", response.data); // Log fetched product data
         setProduct(response.data);
       } catch (error) {
