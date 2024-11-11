@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Table, Button, Form } from 'react-bootstrap';
+import { Table, Button, Form, Container } from 'react-bootstrap';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -21,14 +21,17 @@ const ProductList = () => {
   };
 
   return (
-    <div>
-      <h1>Product List</h1>
+    <Container className="product-list-container">
+      <h1 className="product-list-title"><b>Product List</b></h1>
+
       <Form.Control
         type="text"
         placeholder="Search Products"
         onChange={(e) => setSearchTerm(e.target.value)}
+        className="search-input"
       />
-      <Table striped bordered hover>
+
+      <Table striped bordered hover className="product-table mt-4">
         <thead>
           <tr>
             <th>Description</th>
@@ -50,14 +53,22 @@ const ProductList = () => {
                 <td>{product.quantity}</td>
                 <td>{product.category}</td>
                 <td>
-                  <Button variant="warning" href={`/edit/${product.id}`}>Edit</Button>
-                  <Button variant="danger" onClick={() => deleteProduct(product.id)}>Delete</Button>
+                  <Button variant="warning" href={`/edit/${product.id}`} className="action-button">
+                    Edit
+                  </Button>{' '}
+                  <Button
+                    variant="danger"
+                    onClick={() => deleteProduct(product.id)}
+                    className="action-button"
+                  >
+                    Delete
+                  </Button>
                 </td>
               </tr>
             ))}
         </tbody>
       </Table>
-    </div>
+    </Container>
   );
 };
 

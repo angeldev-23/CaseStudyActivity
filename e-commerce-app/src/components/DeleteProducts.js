@@ -1,111 +1,71 @@
-<!DOCTYPE html>
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { Container, Button, Card } from 'react-bootstrap';
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Library Management</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body>
-    <!-- Header with Logo and Title -->
-    <header>
-        <img src="logo.jpg" alt="PnC Library Logo">
-        <h1>University of Cabuyao</h1>
-    </header>
+const DeleteProduct = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    <div class="container">
-        <h2>PnC eLibrary</h2>
-
-        <!-- Add or Edit Book Form -->
-        <div class="form-section">
-            <h3 id="formTitle">Add New Book</h3>
-            <form id="addBookForm" method="POST">
-                <input type="text" name="title" placeholder="Title" required>
-                <input type="text" name="author" placeholder="Author" required>
-                <input type="number" name="publication_year" placeholder="Publication Year" required>
-                <input type="text" name="genre" placeholder="Genre" required>
-                <input type="hidden" name="id" id="bookId">
-                <button type="submit" id="formButton">Add Book</button>
-            </form>
-        </div>
-
-        <!-- Book List -->
-        <div class="book-list">
-            <h2>Book List</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Title</th>
-                        <th>Author</th>
-                        <th>Publication Year</th>
-                        <th>Genre</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="bookList"></tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Landscape Contact Page Image -->
-    <img src="contact_img.png" alt="Contact Image" class="contact-image">
-
-    <script>
-        let books = [];
-        let nextId = 1;
-
-       
-        $('#addBookForm').submit(function(event) {
-            event.preventDefault();
-            const title = $('input[name="title"]').val();
-            const author = $('input[name="author"]').val();
-            const publicationYear = $('input[name="publication_year"]').val();
-            const genre = $('input[name="genre"]').val();
-
-            const book = {
-                id: nextId++,
-                title,
-                author,
-                publicationYear,
-                genre
-            };
-            books.push(book);
-            updateBookList();
-            this.reset();
-        });
-
-        function updateBookList() {
-            const bookList = $('#bookList');
-            bookList.empty(); // Clear previous content
-
-            books.forEach((book) => {
-                const row = `
-                    <tr>
-                        <td>${book.id}</td>
-                        <td>${book.title}</td>
-                        <td>${book.author}</td>
-                        <td>${book.publicationYear}</td>
-                        <td>${book.genre}</td>
-                        <td>
-                            <button class="deleteButton" data-id="${book.id}">Delete</button>
-                        </td>
-                    </tr>
-                `;
-                bookList.append(row);
-            });
-
-            $('.deleteButton').click(function() {
-                const bookId = $(this).data('id');
-                deleteBook(bookId);
-            });
+  useEffect(() => {
+    const fetchProduct = async () => {
+        try {
+          const response = await axios.get(`http://127.0.0.1:8000/api/products/${id}`);
+          setProduct(response.data);
+          setLoading(false);
+        } catch (error) {
+          console.error('Error fetching product:', error);
+          setLoading(false);
         }
+      };
+    fetchProduct(); // Call fetchProduct inside useEffect
+  }, [id]); // Only depends on the `id`
 
-        function deleteBook(id) {
-            books = books.filter(book => book.id !== id);
-            updateBookList();
-        }
-    </script>
-</body>
-</html>
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`http://127.0.0.1:8000/api/products/${id}`);
+      alert('Product successfully deleted!');
+      navigate('/products'); // Navigate back to the product list
+    } catch (error) {
+      console.error('Error deleting product:', error);
+      alert('Failed to delete product. Please try again.');
+    }
+  };
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  return (
+    <Container className="delete-product-container">
+      {product ? (
+        <Card className="text-center mt-5">
+          <Card.Body>
+            <Card.Title>Are you sure you want to delete this product?</Card.Title>
+            <Card.Text>
+              <strong>Description:</strong> {product.description} <br />
+              <strong>Price:</strong> ${product.price} <br />
+              <strong>Quantity:</strong> {product.quantity} <br />
+              <strong>Category:</strong> {product.category}
+            </Card.Text>
+            <div className="action-buttons">
+              <Button variant="danger" onClick={handleDelete} className="mr-2">
+                Delete
+              </Button>
+              <Button variant="secondary" onClick={() => navigate('/products')}>
+                Cancel
+              </Button>
+            </div>
+          </Card.Body>
+        </Card>
+      ) : (
+        <p>Product not found.</p>
+      )}
+    </Container>
+  );
+};
+
+export default DeleteProduct;
+
