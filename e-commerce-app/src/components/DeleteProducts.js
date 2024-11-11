@@ -1,71 +1,76 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { Container, Button, Card } from 'react-bootstrap';
+import React, { useState, useEffect } from "react";
+import { Button, Container } from "react-bootstrap";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 
 const DeleteProduct = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProduct = async () => {
-        try {
-          const response = await axios.get(`http://127.0.0.1:8000/api/products/${id}`);
-          setProduct(response.data);
-          setLoading(false);
-        } catch (error) {
-          console.error('Error fetching product:', error);
-          setLoading(false);
-        }
-      };
-    fetchProduct(); // Call fetchProduct inside useEffect
-  }, [id]); // Only depends on the `id`
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/products/${id}`
+        );
+
+        setProduct(response.data);
+      } catch (error) {
+        console.error("Error fetching product details:", error);
+      }
+    };
+
+    fetchProduct();
+  }, [id]);
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://127.0.0.1:8000/api/products/${id}`);
-      alert('Product successfully deleted!');
-      navigate('/products'); // Navigate back to the product list
+      await axios.delete(`http://localhost:8000/api/products/${id}`);
+      console.log("Product deleted successfully");
+      navigate("/products");
     } catch (error) {
-      console.error('Error deleting product:', error);
-      alert('Failed to delete product. Please try again.');
+      console.error("Error deleting product:", error);
     }
   };
 
-  if (loading) {
-    return <p>Loading...</p>;
+  if (!product) {
+    return <div>Loading...</div>;
   }
 
   return (
-    <Container className="delete-product-container">
-      {product ? (
-        <Card className="text-center mt-5">
-          <Card.Body>
-            <Card.Title>Are you sure you want to delete this product?</Card.Title>
-            <Card.Text>
-              <strong>Description:</strong> {product.description} <br />
-              <strong>Price:</strong> ${product.price} <br />
-              <strong>Quantity:</strong> {product.quantity} <br />
-              <strong>Category:</strong> {product.category}
-            </Card.Text>
-            <div className="action-buttons">
-              <Button variant="danger" onClick={handleDelete} className="mr-2">
-                Delete
-              </Button>
-              <Button variant="secondary" onClick={() => navigate('/products')}>
-                Cancel
-              </Button>
-            </div>
-          </Card.Body>
-        </Card>
-      ) : (
-        <p>Product not found.</p>
-      )}
+    <Container>
+      <h2>Delete Product</h2>
+      <p>Are you sure you want to delete the following product?</p>
+      <ul>
+        <li>
+          <strong>Barcode:</strong> {product.barcode}
+        </li>
+        <li>
+          <strong>Description:</strong> {product.description}
+        </li>
+        <li>
+          <strong>Price:</strong> ${product.price}
+        </li>
+        <li>
+          <strong>Quantity:</strong> {product.available_quantity}
+        </li>
+        <li>
+          <strong>Category:</strong> {product.category}
+        </li>
+      </ul>
+      <Button variant="danger" onClick={handleDelete}>
+        Confirm Delete
+      </Button>
+      <Button
+        variant="secondary"
+        onClick={() => navigate("/products")}
+        style={{ marginLeft: "10px" }}
+      >
+        Cancel
+      </Button>
     </Container>
   );
 };
 
 export default DeleteProduct;
-

@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Table, Button, Form, Container } from 'react-bootstrap';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Table, Button, Form } from "react-bootstrap";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetchProducts();
   }, []);
 
   const fetchProducts = async () => {
-    const response = await axios.get('http://127.0.0.1:8000/api/products');
+    const response = await axios.get("http://127.0.0.1:8000/api/products");
     setProducts(response.data);
   };
 
@@ -21,17 +21,14 @@ const ProductList = () => {
   };
 
   return (
-    <Container className="product-list-container">
-      <h1 className="product-list-title"><b>Product List</b></h1>
-
+    <div>
+      <h1>Product List</h1>
       <Form.Control
         type="text"
         placeholder="Search Products"
         onChange={(e) => setSearchTerm(e.target.value)}
-        className="search-input"
       />
-
-      <Table striped bordered hover className="product-table mt-4">
+      <Table striped bordered hover>
         <thead>
           <tr>
             <th>Description</th>
@@ -44,22 +41,23 @@ const ProductList = () => {
         <tbody>
           {products
             .filter((product) =>
-              product.description.toLowerCase().includes(searchTerm.toLowerCase())
+              product.description
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase())
             )
             .map((product) => (
               <tr key={product.id}>
                 <td>{product.description}</td>
                 <td>{product.price}</td>
-                <td>{product.quantity}</td>
+                <td>{product.available_quantity}</td>
                 <td>{product.category}</td>
                 <td>
-                  <Button variant="warning" href={`/edit/${product.id}`} className="action-button">
+                  <Button variant="warning" href={`/edit/${product.id}`}>
                     Edit
-                  </Button>{' '}
+                  </Button>
                   <Button
                     variant="danger"
                     onClick={() => deleteProduct(product.id)}
-                    className="action-button"
                   >
                     Delete
                   </Button>
@@ -68,7 +66,7 @@ const ProductList = () => {
             ))}
         </tbody>
       </Table>
-    </Container>
+    </div>
   );
 };
 

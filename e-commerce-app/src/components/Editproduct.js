@@ -1,26 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { Form, Button, Container } from 'react-bootstrap';
-import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import { Form, Button, Container } from "react-bootstrap";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 
 const EditProduct = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
-  const [error, setError] = useState(null); // Error state
   const navigate = useNavigate();
 
   // Fetch the existing product details by ID
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/products/${id}`);
+        const response = await axios.get(
+          `http://localhost:8000/api/products/${id}`
+        );
+
+        console.log("Fetched product data:", response.data); // Log fetched product data
         setProduct(response.data);
       } catch (error) {
-        console.error('Error fetching product details:', error);
-        setError('Failed to load product details');
+        console.error("Error fetching product details:", error);
       }
     };
-
     fetchProduct();
   }, [id]);
 
@@ -32,32 +33,46 @@ const EditProduct = () => {
     e.preventDefault();
 
     try {
-      if (!product || !product.barcode || !product.description || !product.price || !product.quantity || !product.category) {
-        console.error('Product data is incomplete:', product);
+      // Log the product data being sent
+      console.log("Updating product with data:", product);
+
+      // Make sure product is not null and has all required fields
+      if (
+        !product ||
+        !product.barcode ||
+        !product.description ||
+        !product.price ||
+        !product.available_quantity ||
+        !product.category
+      ) {
+        console.error("Product data is incomplete:", product);
         return; // Prevent submission if data is incomplete
       }
 
-      const response = await axios.put(`http://localhost:8000/api/products/${id}`, product);
-      console.log('Product updated successfully:', response.data);
-      navigate(`/view-product/${id}`);
+      // Update the product using the API
+      const response = await axios.put(
+        `http://localhost:8000/api/products/${id}`,
+        product
+      );
+      console.log("Product updated successfully:", response.data); // Log success response
+
+      // Redirect to the view product page after successful update
+      navigate(`/products/${id}`);
     } catch (error) {
-      console.error('Error updating product:', error);
+      console.error("Error updating product:", error);
     }
   };
 
   const handleDelete = async () => {
     try {
       await axios.delete(`http://localhost:8000/api/products/${id}`);
-      navigate('/products');
+      navigate("/products"); // Redirect after successful deletion
     } catch (error) {
-      console.error('Error deleting product:', error);
+      console.error("Error deleting product:", error);
     }
   };
 
-  if (error) {
-    return <div>{error}</div>;
-  }
-
+  // Render form or loading state
   if (!product) {
     return <div>Loading...</div>; // Show loading while fetching data
   }
@@ -103,8 +118,8 @@ const EditProduct = () => {
           <Form.Label>Quantity</Form.Label>
           <Form.Control
             type="number"
-            name="quantity"
-            value={product.quantity}
+            name="available_quantity"
+            value={product.available_quantity}
             onChange={handleChange}
             placeholder="Enter product quantity"
             required
@@ -124,7 +139,11 @@ const EditProduct = () => {
         <Button variant="primary" type="submit">
           Update Product
         </Button>
-        <Button variant="danger" onClick={handleDelete} style={{ marginLeft: '10px' }}>
+        <Button
+          variant="danger"
+          onClick={handleDelete}
+          style={{ marginLeft: "10px" }}
+        >
           Delete Product
         </Button>
       </Form>
