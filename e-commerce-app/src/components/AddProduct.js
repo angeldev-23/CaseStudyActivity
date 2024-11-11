@@ -11,6 +11,7 @@ const AddProduct = () => {
     quantity: "",
     category: "",
   });
+
   const [loading, setLoading] = useState(false); // Loading state
   const [error, setError] = useState(null); // Error state
 
