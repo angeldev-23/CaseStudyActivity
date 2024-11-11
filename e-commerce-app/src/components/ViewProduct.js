@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Table, Button, Form } from 'react-bootstrap';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Table, Button, Form } from "react-bootstrap";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetchProducts();
   }, []);
 
   const fetchProducts = async () => {
-    const response = await axios.get('http://127.0.0.1:8000/api/products');
+    const response = await axios.get("http://127.0.0.1:8000/api/products");
     setProducts(response.data);
   };
 
@@ -41,17 +41,26 @@ const ProductList = () => {
         <tbody>
           {products
             .filter((product) =>
-              product.description.toLowerCase().includes(searchTerm.toLowerCase())
+              product.description
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase())
             )
             .map((product) => (
               <tr key={product.id}>
                 <td>{product.description}</td>
                 <td>{product.price}</td>
-                <td>{product.quantity}</td>
+                <td>{product.available_quantity}</td>
                 <td>{product.category}</td>
                 <td>
-                  <Button variant="warning" href={`/edit/${product.id}`}>Edit</Button>
-                  <Button variant="danger" onClick={() => deleteProduct(product.id)}>Delete</Button>
+                  <Button variant="warning" href={`/edit/${product.id}`}>
+                    Edit
+                  </Button>
+                  <Button
+                    variant="danger"
+                    onClick={() => deleteProduct(product.id)}
+                  >
+                    Delete
+                  </Button>
                 </td>
               </tr>
             ))}

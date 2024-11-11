@@ -1,25 +1,27 @@
-import React, { useState } from 'react';
-import { Form, Button, Container, Table } from 'react-bootstrap';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { Form, Button, Container, Table } from "react-bootstrap";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const SearchProduct = () => {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const navigate = useNavigate();
 
   const handleSearch = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.get(`http://localhost:8000/api/products?search=${query}`);
-      setResults(response.data); 
+      const response = await axios.get(
+        `http://localhost:8000/api/products?search=${query}`
+      );
+      setResults(response.data);
     } catch (error) {
-      console.error('Error fetching search results:', error);
+      console.error("Error fetching search results:", error);
     }
   };
 
   const handleEdit = (id) => {
-    navigate(`/edit-product/${id}`); 
+    navigate(`/edit-product/${id}`);
   };
 
   return (
@@ -27,19 +29,19 @@ const SearchProduct = () => {
       <h2>Search Products</h2>
       <Form onSubmit={handleSearch}>
         <Form.Group controlId="formSearch">
-          <Form.Control 
-            type="text" 
-            placeholder="Enter barcode, description, or category" 
-            value={query} 
-            onChange={(e) => setQuery(e.target.value)} 
+          <Form.Control
+            type="text"
+            placeholder="Enter barcode, description, or category"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
           />
         </Form.Group>
-        <Button variant="primary" type="submit" style={{ marginTop: '10px' }}>
+        <Button variant="primary" type="submit" style={{ marginTop: "10px" }}>
           Search
         </Button>
       </Form>
 
-      <Table striped bordered hover style={{ marginTop: '20px' }}>
+      <Table striped bordered hover style={{ marginTop: "20px" }}>
         <thead>
           <tr>
             <th>Barcode</th>
@@ -56,11 +58,11 @@ const SearchProduct = () => {
               <td>{product.barcode}</td>
               <td>{product.description}</td>
               <td>{product.price}</td>
-              <td>{product.quantity}</td>
+              <td>{product.available_quantity}</td>
               <td>{product.category}</td>
               <td>
-                <Button 
-                  variant="warning" 
+                <Button
+                  variant="warning"
                   onClick={() => handleEdit(product.id)}
                 >
                   Edit
