@@ -6,6 +6,7 @@ import axios from 'axios';
 const EditProduct = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+  const [error, setError] = useState(null); // Error state
   const navigate = useNavigate();
 
   // Fetch the existing product details by ID
@@ -16,6 +17,7 @@ const EditProduct = () => {
         setProduct(response.data);
       } catch (error) {
         console.error('Error fetching product details:', error);
+        setError('Failed to load product details');
       }
     };
 
@@ -30,20 +32,13 @@ const EditProduct = () => {
     e.preventDefault();
 
     try {
-      // Log the product data being sent
-      console.log('Updating product with data:', product);
-
-      // Make sure product is not null and has all required fields
       if (!product || !product.barcode || !product.description || !product.price || !product.quantity || !product.category) {
         console.error('Product data is incomplete:', product);
         return; // Prevent submission if data is incomplete
       }
 
-      // Update the product using the API
       const response = await axios.put(`http://localhost:8000/api/products/${id}`, product);
-      console.log('Product updated successfully:', response.data); // Log success response
-
-      // Redirect to the view product page after successful update
+      console.log('Product updated successfully:', response.data);
       navigate(`/view-product/${id}`);
     } catch (error) {
       console.error('Error updating product:', error);
@@ -53,13 +48,16 @@ const EditProduct = () => {
   const handleDelete = async () => {
     try {
       await axios.delete(`http://localhost:8000/api/products/${id}`);
-      navigate('/products'); // Redirect after successful deletion
+      navigate('/products');
     } catch (error) {
       console.error('Error deleting product:', error);
     }
   };
 
-  // Render form or loading state
+  if (error) {
+    return <div>{error}</div>;
+  }
+
   if (!product) {
     return <div>Loading...</div>; // Show loading while fetching data
   }
@@ -70,56 +68,56 @@ const EditProduct = () => {
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formBarcode">
           <Form.Label>Barcode</Form.Label>
-          <Form.Control 
-            type="text" 
-            name="barcode" 
-            value={product.barcode} 
-            onChange={handleChange} 
-            placeholder="Enter product barcode" 
+          <Form.Control
+            type="text"
+            name="barcode"
+            value={product.barcode}
+            onChange={handleChange}
+            placeholder="Enter product barcode"
             required
           />
         </Form.Group>
         <Form.Group controlId="formDescription">
           <Form.Label>Description</Form.Label>
-          <Form.Control 
-            type="text" 
-            name="description" 
-            value={product.description} 
-            onChange={handleChange} 
-            placeholder="Enter product description" 
+          <Form.Control
+            type="text"
+            name="description"
+            value={product.description}
+            onChange={handleChange}
+            placeholder="Enter product description"
             required
           />
         </Form.Group>
         <Form.Group controlId="formPrice">
           <Form.Label>Price</Form.Label>
-          <Form.Control 
-            type="number" 
-            name="price" 
-            value={product.price} 
-            onChange={handleChange} 
-            placeholder="Enter product price" 
+          <Form.Control
+            type="number"
+            name="price"
+            value={product.price}
+            onChange={handleChange}
+            placeholder="Enter product price"
             required
           />
         </Form.Group>
         <Form.Group controlId="formQuantity">
           <Form.Label>Quantity</Form.Label>
-          <Form.Control 
-            type="number" 
-            name="quantity" 
-            value={product.quantity} 
-            onChange={handleChange} 
-            placeholder="Enter product quantity" 
+          <Form.Control
+            type="number"
+            name="quantity"
+            value={product.quantity}
+            onChange={handleChange}
+            placeholder="Enter product quantity"
             required
           />
         </Form.Group>
         <Form.Group controlId="formCategory">
           <Form.Label>Category</Form.Label>
-          <Form.Control 
-            type="text" 
-            name="category" 
-            value={product.category} 
-            onChange={handleChange} 
-            placeholder="Enter product category" 
+          <Form.Control
+            type="text"
+            name="category"
+            value={product.category}
+            onChange={handleChange}
+            placeholder="Enter product category"
             required
           />
         </Form.Group>
