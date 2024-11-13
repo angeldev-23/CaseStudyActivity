@@ -57,18 +57,9 @@ const EditProduct = () => {
       console.log("Product updated successfully:", response.data); // Log success response
 
       // Redirect to the view product page after successful update
-      navigate(`/products/${id}`);
+      navigate(`/edit-product/${id}`);
     } catch (error) {
       console.error("Error updating product:", error);
-    }
-  };
-
-  const handleDelete = async () => {
-    try {
-      await axios.delete(`http://localhost:8000/api/products/${id}`);
-      navigate("/products"); // Redirect after successful deletion
-    } catch (error) {
-      console.error("Error deleting product:", error);
     }
   };
 
@@ -138,13 +129,6 @@ const EditProduct = () => {
         </Form.Group>
         <Button variant="primary" type="submit">
           Update Product
-        </Button>
-        <Button
-          variant="danger"
-          onClick={handleDelete}
-          style={{ marginLeft: "10px" }}
-        >
-          Delete Product
         </Button>
       </Form>
     </Container>
