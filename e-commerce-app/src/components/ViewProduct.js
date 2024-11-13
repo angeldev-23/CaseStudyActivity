@@ -52,7 +52,10 @@ const ProductList = () => {
                 <td>{product.available_quantity}</td>
                 <td>{product.category}</td>
                 <td>
-                  <Button variant="warning" href={`/edit/${product.id}`}>
+                  <Button
+                    variant="warning"
+                    href={`/edit-product/${product.id}`}
+                  >
                     Edit
                   </Button>
                   <Button

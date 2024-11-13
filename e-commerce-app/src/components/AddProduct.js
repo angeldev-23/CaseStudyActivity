@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form, Button, Container, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import logo from "../assets/gearshift.png";
 
 const AddProduct = () => {
   const [product, setProduct] = useState({
@@ -29,7 +30,7 @@ const AddProduct = () => {
       !product.barcode ||
       !product.description ||
       !product.price ||
-      !product.quantity ||
+      !product.available_quantity ||
       !product.category
     ) {
       alert("Please fill out all fields.");
@@ -45,7 +46,6 @@ const AddProduct = () => {
         product
       );
       console.log("Product added:", response.product);
-
       // Redirect to the product list page after adding the product
       navigate("/products");
     } catch (error) {
@@ -57,10 +57,14 @@ const AddProduct = () => {
   };
 
   return (
-    <Container>
-      <h2>
-        <strong>Add Product</strong>
-      </h2>
+    <Container className="add-product-container">
+      {/* Logo and Header */}
+      <div className="header-container">
+        <img src={logo} alt="GearShift Logo" className="logo" />
+        <h2 className="form-title">
+          <strong>Add Product</strong>
+        </h2>
+      </div>
       {error && <Alert variant="danger">{error}</Alert>}{" "}
       {/* Display error if any */}
       <Form onSubmit={handleSubmit}>
@@ -98,7 +102,7 @@ const AddProduct = () => {
           <Form.Label>Quantity</Form.Label>
           <Form.Control
             type="number"
-            name="quantity"
+            name="available_quantity"
             value={product.available_quantity}
             onChange={handleChange}
             placeholder="Enter product quantity"

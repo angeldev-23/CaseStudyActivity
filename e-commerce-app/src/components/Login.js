@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form, Button, Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { FaCog } from "react-icons/fa"; // Import the gear icon
+import logo from "../assets/gearshift.png";
 
 const Login = ({ setIsAuthenticated }) => {
   const [email, setEmail] = useState("");
@@ -31,9 +32,10 @@ const Login = ({ setIsAuthenticated }) => {
   return (
     <Container className="login-container">
       <div className="login-box">
-        <FaCog className="gear-logo" size={50} /> {/* Use FaCog as gear logo */}
+        <img src={logo} alt="GearShift Logo" className="logo" />{" "}
+        {/* Use the image as the logo */}
         <h2>
-          <b>GearShift</b> Login
+          <b>LOGIN</b>
         </h2>
         <Form onSubmit={handleLogin}>
           <Form.Group controlId="formBasicEmail">
