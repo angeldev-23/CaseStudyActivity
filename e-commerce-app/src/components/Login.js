@@ -40,7 +40,6 @@ const Login = ({ setIsAuthenticated }) => {
               onChange={(e) => setEmail(e.target.value)}
             />
           </Form.Group>
-        </Form>
           <br></br>
           <Form.Group controlId="formBasicPassword">
             <Form.Label>
@@ -57,6 +56,7 @@ const Login = ({ setIsAuthenticated }) => {
           <Button variant="primary" type="submit">
             <strong>Login</strong>
           </Button>
+          </Form>
       </div>
     </Container>
   );
