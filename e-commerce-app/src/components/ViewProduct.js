@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Table, Button, Form } from "react-bootstrap";
-import { Link } from 'react-router-dom';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -53,10 +52,12 @@ const ProductList = () => {
                 <td>{product.available_quantity}</td>
                 <td>{product.category}</td>
                 <td>
-                  <Link to={`/edit-product/${product.id}`}>
-                    <Button variant="warning">Edit</Button>
-                  </Link>
-
+                  <Button
+                    variant="warning"
+                    href={`/edit-product/${product.id}`}
+                  >
+                    Edit
+                  </Button>
                   <Button
                     variant="danger"
                     onClick={() => deleteProduct(product.id)}
