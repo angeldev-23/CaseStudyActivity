@@ -10,6 +10,7 @@ const SearchProduct = () => {
 
   const handleSearch = async (e) => {
     e.preventDefault();
+
     try {
       const response = await axios.get(
         `http://localhost:8000/api/products?search=${query}`
