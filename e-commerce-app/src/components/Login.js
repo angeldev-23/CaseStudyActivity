@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Form, Button, Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { FaCog } from "react-icons/fa"; // Import the gear icon
 import logo from "../assets/gearshift.png";
 
 const Login = ({ setIsAuthenticated }) => {
@@ -41,6 +40,7 @@ const Login = ({ setIsAuthenticated }) => {
               onChange={(e) => setEmail(e.target.value)}
             />
           </Form.Group>
+        </Form>
           <br></br>
           <Form.Group controlId="formBasicPassword">
             <Form.Label>
