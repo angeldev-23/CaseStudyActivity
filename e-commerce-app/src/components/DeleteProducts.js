@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Button, Container } from "react-bootstrap";
+import { Button, Container, Alert, Spinner } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 const DeleteProduct = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -14,10 +16,12 @@ const DeleteProduct = () => {
         const response = await axios.get(
           `http://localhost:8000/api/products/${id}`
         );
-
         setProduct(response.data);
       } catch (error) {
+        setError("Failed to fetch product details.");
         console.error("Error fetching product details:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -30,12 +34,21 @@ const DeleteProduct = () => {
       console.log("Product deleted successfully");
       navigate("/products");
     } catch (error) {
+      setError("Failed to delete the product.");
       console.error("Error deleting product:", error);
     }
   };
 
-  if (!product) {
-    return <div>Loading...</div>;
+  if (loading) {
+    return (
+      <Spinner animation="border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </Spinner>
+    );
+  }
+
+  if (error) {
+    return <Alert variant="danger">{error}</Alert>;
   }
 
   return (
