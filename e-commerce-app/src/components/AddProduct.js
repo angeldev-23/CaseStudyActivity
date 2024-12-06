@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Button, Container, Row, Col } from "react-bootstrap";
+import { Form, Button, Container, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import logo from "../assets/gearshift.png";
@@ -9,9 +9,12 @@ const AddProduct = () => {
     barcode: "",
     description: "",
     price: "",
-    quantity: "",
+    available_quantity: "",
     category: "",
   });
+
+  const [loading, setLoading] = useState(false); // Loading state
+  const [error, setError] = useState(null); // Error state
 
   const navigate = useNavigate();
 
@@ -21,30 +24,47 @@ const AddProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Basic validation
+    if (
+      !product.barcode ||
+      !product.description ||
+      !product.price ||
+      !product.available_quantity ||
+      !product.category
+    ) {
+      alert("Please fill out all fields.");
+      return;
+    }
+
+    setLoading(true);
+    setError(null); // Reset error state before API call
+
     try {
-      // Make the POST request to add the product
       const response = await axios.post(
-        "http://localhost:8000/api/product",
+        "http://localhost:8000/api/products",
         product
       );
-      console.log("Product added:", response.data); // Log success response
+      console.log("Product added:", response.product);
 
-      // Navigate to the products page after successful submission
-      navigate("/ViewProduct");
+      // Redirect to the product list page after adding the product
+      navigate("/products");
     } catch (error) {
-      console.error("Error adding product:", error);
+      console.error("There was an error adding the product:", error);
+      setError("Failed to add product. Please try again."); // Set error message
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <Container className="add-product-container">
       {/* Logo and Header */}
-      <div className="header-container d-flex align-items-center">
+      <div className="header-container">
         <img src={logo} alt="GearShift Logo" className="logo" />
-        <h2 className="form-title me-auto">
+        <h2 className="form-title">
           <strong>Add Product</strong>
         </h2>
-
         {/* Back Button */}
         <Button
           variant="secondary"
@@ -54,63 +74,50 @@ const AddProduct = () => {
           Back to Dashboard
         </Button>
       </div>
-
-      <Form onSubmit={handleSubmit} className="form-content">
-        <Row>
-          <Col md={6}>
-            <Form.Group controlId="formBarcode" className="mb-3">
-              <Form.Label>Barcode</Form.Label>
-              <Form.Control
-                type="text"
-                name="barcode"
-                value={product.barcode}
-                onChange={handleChange}
-                placeholder="Enter product barcode"
-              />
-            </Form.Group>
-          </Col>
-          <Col md={6}>
-            <Form.Group controlId="formDescription" className="mb-3">
-              <Form.Label>Description</Form.Label>
-              <Form.Control
-                type="text"
-                name="description"
-                value={product.description}
-                onChange={handleChange}
-                placeholder="Enter product description"
-              />
-            </Form.Group>
-          </Col>
-        </Row>
-
-        <Row>
-          <Col md={6}>
-            <Form.Group controlId="formPrice" className="mb-3">
-              <Form.Label>Price</Form.Label>
-              <Form.Control
-                type="number"
-                name="price"
-                value={product.price}
-                onChange={handleChange}
-                placeholder="Enter product price"
-              />
-            </Form.Group>
-          </Col>
-          <Col md={6}>
-            <Form.Group controlId="formQuantity" className="mb-3">
-              <Form.Label>Quantity</Form.Label>
-              <Form.Control
-                type="number"
-                name="quantity"
-                value={product.quantity}
-                onChange={handleChange}
-                placeholder="Enter product quantity"
-              />
-            </Form.Group>
-          </Col>
-        </Row>
-
-        <Form.Group controlId="formCategory" className="mb-4">
+      {error && <Alert variant="danger">{error}</Alert>}{" "}
+      {/* Display error if any */}
+      <Form onSubmit={handleSubmit}>
+        <Form.Group controlId="formBarcode">
+          <Form.Label>Barcode</Form.Label>
+          <Form.Control
+            type="text"
+            name="barcode"
+            value={product.barcode}
+            onChange={handleChange}
+            placeholder="Enter product barcode"
+          />
+        </Form.Group>
+        <Form.Group controlId="formDescription">
+          <Form.Label>Description</Form.Label>
+          <Form.Control
+            type="text"
+            name="description"
+            value={product.description}
+            onChange={handleChange}
+            placeholder="Enter product description"
+          />
+        </Form.Group>
+        <Form.Group controlId="formPrice">
+          <Form.Label>Price</Form.Label>
+          <Form.Control
+            type="number"
+            name="price"
+            value={product.price}
+            onChange={handleChange}
+            placeholder="Enter product price"
+          />
+        </Form.Group>
+        <Form.Group controlId="formQuantity">
+          <Form.Label>Quantity</Form.Label>
+          <Form.Control
+            type="number"
+            name="available_quantity"
+            value={product.available_quantity}
+            onChange={handleChange}
+            placeholder="Enter product quantity"
+          />
+        </Form.Group>
+        <Form.Group controlId="formCategory">
           <Form.Label>Category</Form.Label>
           <Form.Control
             type="text"
@@ -120,9 +127,9 @@ const AddProduct = () => {
             placeholder="Enter product category"
           />
         </Form.Group>
-
-        <Button variant="primary" type="submit" className="submit-button">
-          Add Product
+        <br />
+        <Button variant="primary" type="submit" disabled={loading}>
+          {loading ? "Adding..." : "Add Product"}
         </Button>
       </Form>
     </Container>

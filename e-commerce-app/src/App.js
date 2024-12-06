@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import "./App.css";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
@@ -8,7 +13,7 @@ import ViewProduct from "./components/ViewProduct";
 import EditProduct from "./components/Editproduct";
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
 
   return (
     <Router>
@@ -18,14 +23,22 @@ function App() {
             path="/"
             element={<Login setIsAuthenticated={setIsAuthenticated} />}
           />
-          {isAuthenticated && (
-            <>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/add-product" element={<AddProduct />} />
-              <Route path="/products" element={<ViewProduct />} />
-              <Route path="/edit-product/" element={<EditProduct />} />
-            </>
-          )}
+          <Route
+            path="/dashboard"
+            element={isAuthenticated ? <Dashboard /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/add-product"
+            element={isAuthenticated ? <AddProduct /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/products"
+            element={isAuthenticated ? <ViewProduct /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/edit/:id"
+            element={isAuthenticated ? <EditProduct /> : <Navigate to="/" />}
+          />
         </Routes>
       </div>
     </Router>

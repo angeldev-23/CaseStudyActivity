@@ -22,7 +22,7 @@ const SearchProduct = () => {
   };
 
   const handleEdit = (id) => {
-    navigate(`/edit-product/${id}`);
+    navigate(`/edit/${id}`); // Redirect to the correct route with dynamic ID
   };
 
   return (
@@ -42,37 +42,41 @@ const SearchProduct = () => {
         </Button>
       </Form>
 
-      <Table striped bordered hover style={{ marginTop: "20px" }}>
-        <thead>
-          <tr>
-            <th>Barcode</th>
-            <th>Description</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Category</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {results.map((product) => (
-            <tr key={product.id}>
-              <td>{product.barcode}</td>
-              <td>{product.description}</td>
-              <td>{product.price}</td>
-              <td>{product.available_quantity}</td>
-              <td>{product.category}</td>
-              <td>
-                <Button
-                  variant="warning"
-                  onClick={() => handleEdit(product.id)}
-                >
-                  Edit
-                </Button>
-              </td>
+      {results.length > 0 ? (
+        <Table striped bordered hover style={{ marginTop: "20px" }}>
+          <thead>
+            <tr>
+              <th>Barcode</th>
+              <th>Description</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Category</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {results.map((product) => (
+              <tr key={product.id}>
+                <td>{product.barcode}</td>
+                <td>{product.description}</td>
+                <td>{product.price}</td>
+                <td>{product.available_quantity}</td>
+                <td>{product.category}</td>
+                <td>
+                  <Button
+                    variant="warning"
+                    onClick={() => handleEdit(product.id)}
+                  >
+                    Edit
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      ) : (
+        <p style={{ marginTop: "20px" }}>No results found.</p>
+      )}
     </Container>
   );
 };

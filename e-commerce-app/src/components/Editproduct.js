@@ -15,8 +15,6 @@ const EditProduct = () => {
         const response = await axios.get(
           `http://localhost:8000/api/products/${id}`
         );
-
-        console.log("Fetched product data:", response.data); // Log fetched product data
         setProduct(response.data);
       } catch (error) {
         console.error("Error fetching product details:", error);
@@ -36,7 +34,7 @@ const EditProduct = () => {
       // Log the product data being sent
       console.log("Updating product with data:", product);
 
-      // Make sure product is not null and has all required fields
+      // Validate that product contains all required fields
       if (
         !product ||
         !product.barcode ||
@@ -50,14 +48,11 @@ const EditProduct = () => {
       }
 
       // Update the product using the API
-      const response = await axios.put(
-        `http://localhost:8000/api/products/${id}`,
-        product
-      );
-      console.log("Product updated successfully:", response.data); // Log success response
+      await axios.put(`http://localhost:8000/api/products/${id}`, product);
+      console.log("Product updated successfully");
 
-      // Redirect to the view product page after successful update
-      navigate(`/edit-product/${id}`);
+      // Redirect to the product listing or another relevant page
+      navigate("/products");
     } catch (error) {
       console.error("Error updating product:", error);
     }
@@ -65,7 +60,7 @@ const EditProduct = () => {
 
   // Render form or loading state
   if (!product) {
-    return <div>Loading...</div>; // Show loading while fetching data
+    return <div>Loading...</div>;
   }
 
   return (
