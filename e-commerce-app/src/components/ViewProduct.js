@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Table, Button, Form } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchProducts();
@@ -13,11 +15,6 @@ const ProductList = () => {
   const fetchProducts = async () => {
     const response = await axios.get("http://127.0.0.1:8000/api/products");
     setProducts(response.data);
-  };
-
-  const deleteProduct = async (id) => {
-    await axios.delete(`http://127.0.0.1:8000/api/products/${id}`);
-    fetchProducts();
   };
 
   return (
@@ -52,15 +49,12 @@ const ProductList = () => {
                 <td>{product.available_quantity}</td>
                 <td>{product.category}</td>
                 <td>
-                  <Button
-                    variant="warning"
-                    href={`/edit-product/${product.id}`}
-                  >
-                    Edit
-                  </Button>
+                  <Link to={`/edit-product/${product.id}`}>
+                    <Button variant="warning">Edit</Button>
+                  </Link>
                   <Button
                     variant="danger"
-                    onClick={() => deleteProduct(product.id)}
+                    onClick={() => navigate(`/delete-product/${product.id}`)}
                   >
                     Delete
                   </Button>

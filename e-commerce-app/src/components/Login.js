@@ -21,14 +21,6 @@ const Login = ({ setIsAuthenticated }) => {
     }
   };
 
-  const handleForgotPassword = () => {
-    alert("Answer the admin security question to reset your password.");
-  };
-
-  const handleSignUp = () => {
-    navigate("/signup");
-  };
-
   return (
     <Container className="login-container">
       <div className="login-box">
@@ -65,13 +57,6 @@ const Login = ({ setIsAuthenticated }) => {
           <Button variant="primary" type="submit">
             <strong>Login</strong>
           </Button>
-        </Form>
-        <div className="forgot-password" onClick={handleForgotPassword}>
-          Forgot Password?
-        </div>
-        <div className="signup" onClick={handleSignUp}>
-          Sign Up
-        </div>
       </div>
     </Container>
   );

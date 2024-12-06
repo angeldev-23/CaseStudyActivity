@@ -94,3 +94,155 @@ body {
 .form-group {
   margin-bottom: 10px;
 }
+
+.logo {
+  width: 200px; /* Adjust width as needed */
+}
+
+.dashboard-container {
+  padding: 20px;
+  background-color: #ffffff; /* Light background */
+  border-radius: 10px;
+  max-width: 800px;
+  margin: auto;
+  text-align: center;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.gear-logo {
+  color: #393939;
+  margin-right: 10px;
+  filter: drop-shadow(2px 2px 2px rgba(0, 106, 255, 0.5));
+}
+
+.brand-text {
+  font-size: 2em;
+  color: #393939;
+  font-weight: bold;
+}
+
+.welcome-message {
+  font-size: 1.2em;
+  color: #001c3a;
+  margin-bottom: 20px;
+}
+
+.divider {
+  border-top: 2px solid #ffffff;
+  margin: 20px 0;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.dashboard-button {
+  padding: 10px 20px;
+  font-size: 1em;
+  font-weight: bold;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Button shadow */
+  transition: all 0.3s ease;
+}
+
+.dashboard-button:hover {
+  transform: translateY(-2px); /* Lift button on hover */
+}
+
+.button-link {
+  text-decoration: none;
+}
+.add-product-container {
+  padding: 20px;
+  max-width: 700px;
+  margin: auto;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.form-title {
+  font-size: 1.8em;
+  color: #333;
+  font-weight: bold;
+  margin: 0;
+}
+
+.form-content {
+  padding: 10px 20px;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 10px;
+  font-weight: bold;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.product-list-container {
+  padding: 20px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.product-list-title {
+  font-size: 2em;
+  color: #333;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  max-width: 300px;
+  margin: 0 auto 20px auto;
+  display: block;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 1em;
+}
+
+.product-table th {
+  text-align: center;
+  font-weight: bold;
+}
+
+.product-table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.action-button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  font-weight: bold;
+}
+
+.delete-product-container {
+  padding: 20px;
+  max-width: 600px;
+  margin: auto;
+}
+
+.action-buttons .btn {
+  width: 100px;
+  margin: 5px;
+}
+
