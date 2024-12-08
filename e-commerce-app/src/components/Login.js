@@ -65,9 +65,7 @@ const Login = ({ setIsAuthenticated }) => {
 export default Login;
 
 /* 
-  This is a great starting point for a login component! It is functional and cleanly coded. 
-  Below are some suggestions to make the program more user-friendly and robust:
-
+ 
   1. Input Validation:
      - Add validation for the email and password fields to ensure they are not empty or invalid before submitting.
      - You can use regex to validate the email format and display an error message for invalid inputs.
