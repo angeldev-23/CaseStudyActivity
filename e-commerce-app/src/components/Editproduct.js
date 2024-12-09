@@ -136,3 +136,9 @@ const EditProduct = () => {
 };
 
 export default EditProduct;
+
+Recommended Enhancements
+Use React Hook Form or a similar library for managing forms. This would simplify validation and state management.
+Use a loading spinner or progress indicator while fetching or submitting data.
+Replace the hardcoded API URLs with environment variables to allow flexibility between environments (e.g., development, production).
+Provide more informative error feedback to the user on form submission failure.
