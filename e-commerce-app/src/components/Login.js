@@ -68,8 +68,7 @@ export default Login;
  
   1. Input Validation:
      - Add validation for the email and password fields to ensure they are not empty or invalid before submitting.
-     - You can use regex to validate the email format and display an error message for invalid inputs.
-
+     
   2. Feedback for Users:
      - Replace the "alert" for invalid credentials with an inline error message or toast notification for a better user experience.
      - Add a loading indicator during the login process to show the user that their request is being processed.
